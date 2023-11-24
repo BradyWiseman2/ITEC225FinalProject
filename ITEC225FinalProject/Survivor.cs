@@ -14,7 +14,8 @@ namespace ITEC225FinalProject
         public int MoveSpeed { get; set; }
         int DoubleJumps { get; set; }
         int Damage { get; set; } //Subject to change when the damage formula is complete
-           
+        public bool MoveLeft { get; set; }
+        public bool MoveRight { get; set; }
         public Survivor(int health, int armor, int moveSpeed, int doubleJumps, int damage) 
             : base(0,0, new Bitmap[] {Properties.Resources.TestSprite})
         {

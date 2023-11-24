@@ -37,9 +37,13 @@ namespace ITEC225FinalProject
                 a.Location.X = i;
 
             }
+            if (a.MoveDown)
+            {
+                a.Acceleration += 2;
+            }
         }
 
-        private void Gravity(List<Entity> a)
+        public void Gravity(List<Entity> a)
         {
             foreach (Entity e in a)
             {
@@ -51,7 +55,7 @@ namespace ITEC225FinalProject
                 }
                 else
                 {
-                    if (e.Acceleration < 30)
+                    if (e.Acceleration < 35)
                     {
                         e.Acceleration++;
                     }

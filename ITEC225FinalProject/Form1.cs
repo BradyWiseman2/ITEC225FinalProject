@@ -35,7 +35,7 @@ namespace ITEC225FinalProject
                     movement.MovementPlayer((entity as Survivor));
                 }
             }         
-            Gravity(entities);
+            movement.Gravity(entities);
 
            
             pBoxMain.Image = Test.RenderFrame(entities);
@@ -70,6 +70,9 @@ namespace ITEC225FinalProject
                         STest2.Jump();
                     }
                     break;
+                case Keys.S:
+                    STest2.MoveDown = true;
+                    break;
 
             }
         }
@@ -102,38 +105,11 @@ namespace ITEC225FinalProject
                         STest2.Acceleration = -3;
                     }
                     break;
+                case Keys.S:
+                    STest2.MoveDown = false;
+                    break;
             }
         }
-
-        private void Gravity(List<Entity> a)
-        {
-            foreach (Entity e in a)
-            {
-                if (ActiveCollision.GetPixel(e.Location.X, e.Location.Y + e.ActiveSprite.Height + 1) == Ground ||
-                   ActiveCollision.GetPixel(e.Location.X + e.ActiveSprite.Width, e.Location.Y + e.ActiveSprite.Height + 1) == Ground)
-                {
-                    e.Acceleration = 0;
-                    e.Grounded = true;
-                }
-                else
-                {
-                    if (e.Acceleration < 30)
-                    {
-                        e.Acceleration++;
-                    }
-                    e.Grounded = false;
-                }
-
-
-                 int b = e.Location.Y += e.Acceleration;
-
-                while (ActiveCollision.GetPixel(e.Location.X, b + e.ActiveSprite.Height) == Ground ||
-                    ActiveCollision.GetPixel(e.Location.X + e.ActiveSprite.Width, b + e.ActiveSprite.Height) == Ground)
-                {
-                    b--;
-                }
-                e.Location.Y = b;
-            }
-        }
+             
     }
 }

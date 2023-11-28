@@ -11,7 +11,7 @@ namespace ITEC225FinalProject
         public Bitmap ActiveCollision { get; set;}
         Color Ground = Properties.Resources.CollisionKey.GetPixel(2, 0);
 
-        public void MovementPlayer(Survivor a)
+        public void MovementPlayer(Survivor a)  //No longer used, kept as a failsafe
         {
             if (a.MoveLeft && ActiveCollision.GetPixel(a.Location.X - 1, a.Location.Y) != Ground
                && ActiveCollision.GetPixel(a.Location.X - 1, a.Location.Y + a.ActiveSprite.Height) != Ground)
@@ -39,7 +39,32 @@ namespace ITEC225FinalProject
             }
             if (a.MoveDown)
             {
-                a.Acceleration += 2;
+                a.VelocityY += 2;
+            }
+        }
+
+        public void PlayerVelocity(Survivor a)
+        {
+            if(a.MoveLeft && Math.Abs(a.VelocityX) < a.MaxMoveSpeed)
+            {              
+                a.VelocityX -= 2;
+                a.ChangeDir(true);
+            }
+            else if (a.MoveRight && Math.Abs(a.VelocityX) < a.MaxMoveSpeed)
+            {
+                a.ChangeDir(false);
+                a.VelocityX += 2;
+            }
+            else
+            {
+                if(a.VelocityX > 0)
+                {
+                    a.VelocityX-=2;
+                }
+                if(a.VelocityX < 0)
+                {
+                    a.VelocityX+=2;
+                }
             }
         }
 
@@ -47,31 +72,72 @@ namespace ITEC225FinalProject
         {
             foreach (Entity e in a)
             {
-                if (ActiveCollision.GetPixel(e.Location.X, e.Location.Y + e.ActiveSprite.Height + 1) == Ground ||
-                   ActiveCollision.GetPixel(e.Location.X + e.ActiveSprite.Width, e.Location.Y + e.ActiveSprite.Height + 1) == Ground)
+                if (e is not MoveHitbox)
                 {
-                    e.Acceleration = 0;
-                    e.Grounded = true;
-                }
-                else
-                {
-                    if (e.Acceleration < 35)
+                    if (ActiveCollision.GetPixel(e.Location.X, e.Location.Y + e.ActiveSprite.Height + 1) == Ground ||
+                       ActiveCollision.GetPixel(e.Location.X + e.ActiveSprite.Width, e.Location.Y + e.ActiveSprite.Height + 1) == Ground)
                     {
-                        e.Acceleration++;
+                        e.VelocityY = 0;
+                        e.Grounded = true;
                     }
-                    e.Grounded = false;
+                    else
+                    {
+                        if (e.VelocityY < 35)
+                        {
+                            e.VelocityY++;
+                        }
+                        e.Grounded = false;
+                    }
+
+
+                    int b = e.Location.Y += e.VelocityY;
+
+                    while (ActiveCollision.GetPixel(e.Location.X, b + e.ActiveSprite.Height) == Ground ||
+                        ActiveCollision.GetPixel(e.Location.X + e.ActiveSprite.Width, b + e.ActiveSprite.Height) == Ground)
+                    {
+                        b--;
+                    }
+                    e.Location.Y = b;
                 }
-
-
-                int b = e.Location.Y += e.Acceleration;
-
-                while (ActiveCollision.GetPixel(e.Location.X, b + e.ActiveSprite.Height) == Ground ||
-                    ActiveCollision.GetPixel(e.Location.X + e.ActiveSprite.Width, b + e.ActiveSprite.Height) == Ground)
-                {
-                    b--;
-                }
-                e.Location.Y = b;
             }
         }
+
+        public void ApplyVelocity(List<Entity> e)
+        {
+            foreach (Entity a in e)
+            {
+
+                if (a.VelocityX > 0) //Moving Right
+                {
+                    if (ActiveCollision.GetPixel(a.Location.X + a.ActiveSprite.Width + 1, a.Location.Y) != Ground
+                    && ActiveCollision.GetPixel(a.Location.X + a.ActiveSprite.Width + 1, a.Location.Y + a.ActiveSprite.Height) != Ground)
+                    {
+
+                        int i = a.Location.X + a.VelocityX;
+                        while (ActiveCollision.GetPixel(i + a.ActiveSprite.Width, a.Location.Y) == Ground ||
+                            ActiveCollision.GetPixel(i + a.ActiveSprite.Width, a.Location.Y + a.ActiveSprite.Height) == Ground)
+                        {
+                            i--;
+                        }
+                        a.Location.X = i;
+                    }
+                }
+                else if (a.VelocityX < 0) //Moving Left
+                {
+                    if (ActiveCollision.GetPixel(a.Location.X - 1, a.Location.Y) != Ground
+                   && ActiveCollision.GetPixel(a.Location.X - 1, a.Location.Y + a.ActiveSprite.Height) != Ground)
+                    {
+                        int i = a.Location.X + a.VelocityX;
+                        while (ActiveCollision.GetPixel(i, a.Location.Y) == Ground ||
+                            ActiveCollision.GetPixel(i, a.Location.Y + a.ActiveSprite.Height) == Ground)
+                        {
+                            i++;
+                        }
+                        a.Location.X = i;
+                    }
+                }
+            }
+        }
+        
     }
 }

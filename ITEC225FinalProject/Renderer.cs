@@ -34,8 +34,9 @@ namespace ITEC225FinalProject
 
         public Bitmap[] SpritesArray;
         public bool Grounded;
-        public int Acceleration { get; set; }
-
+        public int VelocityY { get; set; }
+        public int VelocityX { get; set; }
+        
         public Bitmap ActiveSprite { get { return SpritesArray[0]; } }
         public Bitmap[] Sprites
         {

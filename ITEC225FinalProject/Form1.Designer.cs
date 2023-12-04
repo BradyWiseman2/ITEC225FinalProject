@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             timerMain = new System.Windows.Forms.Timer(components);
             pBoxMain = new PictureBox();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pBoxMain).BeginInit();
             SuspendLayout();
             // 
@@ -50,12 +51,22 @@
             pBoxMain.TabIndex = 0;
             pBoxMain.TabStop = false;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(446, 123);
+            label1.Name = "label1";
+            label1.Size = new Size(38, 15);
+            label1.TabIndex = 1;
+            label1.Text = "label1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1412, 649);
+            Controls.Add(label1);
             Controls.Add(pBoxMain);
             Name = "Form1";
             Text = "Form1";
@@ -64,11 +75,13 @@
             KeyUp += Form1_KeyUp;
             ((System.ComponentModel.ISupportInitialize)pBoxMain).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private System.Windows.Forms.Timer timerMain;
         private PictureBox pBoxMain;
+        private Label label1;
     }
 }

@@ -124,6 +124,9 @@
   <data name="DragonTailTest" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DragonTailTest.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="EarthPower" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EarthPower.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Flamethrower" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Flamethrower.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -148,6 +151,30 @@
   <data name="FlygonIdle7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FlygonIdle7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HakamoWalk1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HakamoWalk1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HakamoWalk2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HakamoWalk2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HakamoWalk3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HakamoWalk3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HakamoWalk4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HakamoWalk4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KommoWalk1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KommoWalk1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KommoWalk2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KommoWalk2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KommoWalk3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KommoWalk3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KommoWalk4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\KommoWalk4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TestCollision1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TestCollision1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -157,10 +184,19 @@
   <data name="TestCollision3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TestCollision3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TestCollision4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TestCollision4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TestCollision5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TestCollision5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TestSprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TestSprite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TestSprite2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TestSprite2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TestVisual5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TestVisual5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

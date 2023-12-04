@@ -10,61 +10,88 @@ namespace ITEC225FinalProject
     {
         public Bitmap ActiveCollision { get; set;}
         Color Ground = Properties.Resources.CollisionKey.GetPixel(2, 0);
-
-        public void MovementPlayer(Survivor a)  //No longer used, kept as a failsafe
-        {
-            if (a.MoveLeft && ActiveCollision.GetPixel(a.Location.X - 1, a.Location.Y) != Ground
-               && ActiveCollision.GetPixel(a.Location.X - 1, a.Location.Y + a.ActiveSprite.Height) != Ground)
-            {
-                int i = a.Location.X - a.MoveSpeed;
-                while (ActiveCollision.GetPixel(i, a.Location.Y) == Ground ||
-                    ActiveCollision.GetPixel(i, a.Location.Y + a.ActiveSprite.Height) == Ground)
-                {
-                    i++;
-                }
-                a.Location.X = i;
-            }
-            if (a.MoveRight && ActiveCollision.GetPixel(a.Location.X + a.ActiveSprite.Width + 1, a.Location.Y) != Ground
-                && ActiveCollision.GetPixel(a.Location.X + a.ActiveSprite.Width + 1, a.Location.Y + a.ActiveSprite.Height) != Ground)
-            {
-
-                int i = a.Location.X + a.MoveSpeed;
-                while (ActiveCollision.GetPixel(i + a.ActiveSprite.Width, a.Location.Y) == Ground ||
-                    ActiveCollision.GetPixel(i + a.ActiveSprite.Width, a.Location.Y + a.ActiveSprite.Height) == Ground)
-                {
-                    i--;
-                }
-                a.Location.X = i;
-
-            }
-            if (a.MoveDown)
-            {
-                a.VelocityY += 2;
-            }
-        }
-
+     
         public void PlayerVelocity(Survivor a)
         {
-            if(a.MoveLeft && Math.Abs(a.VelocityX) < a.MaxMoveSpeed)
+            if(a.MoveLeft && Math.Abs(a.VelocityX) < a.MaxMoveSpeed & !a.IsMovementLocked)
             {              
                 a.VelocityX -= 2;
                 a.ChangeDir(true);
             }
-            else if (a.MoveRight && Math.Abs(a.VelocityX) < a.MaxMoveSpeed)
+            else if (a.MoveRight && Math.Abs(a.VelocityX) < a.MaxMoveSpeed && !a.IsMovementLocked)
             {
                 a.ChangeDir(false);
                 a.VelocityX += 2;
             }
-            else
+            else if(a.IsMovementLocked || Math.Abs(a.VelocityX) > a.MaxMoveSpeed || a.MoveLeft != true && a.VelocityX < 0 || a.MoveRight != true && a.VelocityX > 0)
             {
+                int sub = Math.Abs(a.VelocityX / 10);
+                if(sub <= 0)
+                {
+                    sub = 1;
+                }
+
                 if(a.VelocityX > 0)
                 {
-                    a.VelocityX-=2;
+                    a.VelocityX-=sub;
                 }
                 if(a.VelocityX < 0)
                 {
-                    a.VelocityX+=2;
+                    a.VelocityX+=sub;
                 }
+            }
+            if (a.MoveUp)
+            {
+                a.Jump();
+
+            }
+        }
+
+        public void MonsterMovement(Monster a)
+        {
+            if (a.Target.Location.X - a.Location.X > 0 && a.TargetDistance > a.AttackRange -3)
+            {
+                a.MoveRight = true;
+                a.MoveLeft = false;
+           
+            }
+            else if (a.TargetDistance > a.AttackRange -3)
+            {
+                a.MoveRight = false;
+                a.MoveLeft = true;
+               
+            }
+            else
+            {
+                a.MoveRight = false;
+                a.MoveLeft = false;
+            }
+            
+                if (ActiveCollision.GetPixel(a.Location.X + a.ActiveSprite.Width + 10, a.Location.Y) == Ground
+                || ActiveCollision.GetPixel(a.Location.X + a.ActiveSprite.Width + 10, a.Location.Y + a.ActiveSprite.Height) == Ground)
+                {
+                  a.MoveUp = true;
+                }
+            
+           
+               else if (ActiveCollision.GetPixel(a.Location.X - 10, a.Location.Y) == Ground
+               || ActiveCollision.GetPixel(a.Location.X - 10, a.Location.Y + a.ActiveSprite.Height) == Ground)
+                {
+                a.MoveUp = true;
+                }
+            else
+            {
+                a.MoveUp = false;
+                a.JumpedThisUpPress = false;
+            }
+                
+        }
+
+        public void MonsterAttack(Monster a)
+        {
+            if(a.TargetDistance < a.AttackRange)               
+            {
+                a.PrimaryFire();
             }
         }
 
@@ -79,6 +106,11 @@ namespace ITEC225FinalProject
                     {
                         e.VelocityY = 0;
                         e.Grounded = true;
+                        if(e is Survivor)
+                        {
+                            (e as Survivor).RefreshDoubleJumps();
+                        }
+                        
                     }
                     else
                     {

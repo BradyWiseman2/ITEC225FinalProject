@@ -9,35 +9,46 @@ namespace ITEC225FinalProject
         Renderer Test;
         List<Entity> entities = new List<Entity>();
         SurvivorFlygon STest = new SurvivorFlygon();
-        Survivor STest2 = new Survivor(100, 10, 8, 0, 100);
-        Bitmap ActiveCollision = Properties.Resources.TestCollision3;
+        SurvivorFlygon STest2 = new SurvivorFlygon();
+        MonsterHakamo MTest1 = new MonsterHakamo();
+        MonsterKommo MTest2 = new MonsterKommo();
+        List<Monster> monsters = new List<Monster>();
+        Bitmap ActiveCollision = Properties.Resources.TestCollision5;
         Color Ground = Properties.Resources.CollisionKey.GetPixel(2, 0);
         Movement movement = new Movement();
         List<Entity> deletionlist = new List<Entity>();
-        Bitmap Game = new Bitmap(Properties.Resources.TestCollision3);
+        Bitmap Game = new Bitmap(Properties.Resources.TestCollision5);
         public Form1()
         {
             InitializeComponent();
             Test = new Renderer();
-            Test.Background = Properties.Resources.TestCollision3;
+            Test.Background = Properties.Resources.TestVisual5;
             entities.Add(STest);
             entities.Add(STest2);
+            entities.Add(MTest1);
+            monsters.Add(MTest1);
+            entities.Add(MTest2);
+            monsters.Add(MTest2);
             STest.Location.X = 1100;
+            STest2.Location.X = 1000;
+            MTest1.Location.X = 100;
+            MTest2.Location.X = 150;
             movement.ActiveCollision = ActiveCollision;
             STest2.Sprites[0] = Properties.Resources.TestSprite2;
-            STest.SecondaryFireWent += STest_SecondaryFireWent;
-            STest.PrimaryFireWent += STest_PrimaryFireWent;
+            STest.SecondaryFireWent += AddMoveHitbox;
+            STest.PrimaryFireWent += AddMoveHitbox;
+            STest.SpecialWent += AddMoveHitbox;
+            MTest1.PrimaryFireWent += AddMoveHitbox;
+            MTest2.PrimaryFireWent += AddMoveHitbox;
         }
 
-        private void STest_PrimaryFireWent(object sender, AttackEventArg e)
+        private void AddMoveHitbox(object sender, AttackEventArg e)
         {
-            entities.Add(e.MoveHitbox);
-        }
+            foreach (MoveHitbox hitbox in e.MoveHitbox)
+            {
+                entities.Add(hitbox);
+            }
 
-        private void STest_SecondaryFireWent(object sender, AttackEventArg e)
-        {
-
-            entities.Add(e.MoveHitbox);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -51,6 +62,15 @@ namespace ITEC225FinalProject
 
             foreach (Entity entity in entities)
             {
+                if (entity is Monster)
+                {
+                    if ((entity as Monster).Target == null || (entity as Monster).Target.CurrentHealth < 1)
+                    {
+                        (entity as Monster).FindTarget(entities);
+                    }
+                    movement.MonsterMovement((entity as Monster));
+
+                }
                 if (entity is Survivor)
                 {
                     if ((entity as Survivor).CurrentHealth < 1)
@@ -58,7 +78,7 @@ namespace ITEC225FinalProject
                         deletionlist.Add(entity);
                     }
                     (entity as Survivor).UpdateCooldowns();
-                    
+                    (entity as Survivor).anim();
                     movement.PlayerVelocity((entity as Survivor));
                 }
                 if (entity is MoveHitbox)
@@ -70,9 +90,13 @@ namespace ITEC225FinalProject
                     }
                 }
 
-            }
 
-            STest.anim();
+            }
+            foreach(Monster a in monsters)
+            {
+                movement.MonsterAttack(a);
+            }
+            
             entities.RemoveAll(entity => deletionlist.Contains(entity));
             deletionlist.Clear();
             movement.ApplyVelocity(entities);
@@ -89,11 +113,12 @@ namespace ITEC225FinalProject
 
 
             Game = Test.RenderFrame(entities);
-            Bitmap P1 = Game.Clone(STest.CameraPos(ActiveCollision),Game.PixelFormat);
-           
-            
-            pBoxMain.Image = P1;
+            Bitmap P1 = Game.Clone(STest.CameraPos(ActiveCollision), Game.PixelFormat);
 
+
+
+            pBoxMain.Image = P1;
+            label1.Text = STest.VelocityX.ToString();
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -101,21 +126,30 @@ namespace ITEC225FinalProject
             switch (e.KeyCode)
             {
                 case Keys.Left:
-                   
+
                     STest.MoveLeft = true;
                     break;
                 case Keys.Right:
-                   
+
                     STest.MoveRight = true;
                     break;
                 case Keys.Up:
-                    if (STest.Grounded)
-                    {
-                        STest.Jump();
-                    }
+                    STest.MoveUp = true;
                     break;
                 case Keys.Down:
+                    STest.SecondaryFire();
+                    break;
+                case Keys.NumPad1:
                     STest.PrimaryFire();
+                    break;
+                case Keys.NumPad2:
+                    STest.SecondaryFire();
+                    break;
+                case Keys.NumPad3:
+                    STest.Utility();
+                    break;
+                case Keys.NumPad4:
+                    STest.Special();
                     break;
                 case Keys.A:
                     STest2.MoveLeft = true;
@@ -124,10 +158,8 @@ namespace ITEC225FinalProject
                     STest2.MoveRight = true;
                     break;
                 case Keys.W:
-                    if (STest2.Grounded)
-                    {
-                        STest2.Jump();
-                    }
+                    STest2.MoveUp = true;
+
                     break;
                 case Keys.S:
                     STest2.MoveDown = true;
@@ -151,6 +183,8 @@ namespace ITEC225FinalProject
                     {
                         STest.VelocityY = -3;
                     }
+                    STest.MoveUp = false;
+                    STest.JumpedThisUpPress = false;
                     break;
                 case Keys.A:
                     STest2.MoveLeft = false;
@@ -163,6 +197,8 @@ namespace ITEC225FinalProject
                     {
                         STest2.VelocityY = -3;
                     }
+                    STest2.MoveUp = false;
+                    STest2.JumpedThisUpPress = false;
                     break;
                 case Keys.S:
                     STest2.MoveDown = false;
@@ -183,8 +219,8 @@ namespace ITEC225FinalProject
                             a.Location.Y < b.Location.Y + b.ActiveSprite.Height &&
                             a.Location.Y + a.ActiveSprite.Height > b.Location.Y
                             && b is not MoveHitbox
-                            && b != (a as MoveHitbox).Owner
-                            && !(b as Survivor).ImmunityList.Contains(a))
+                            && (b as Survivor).TeamID != (a as MoveHitbox).Owner.TeamID
+                            && !(b as Survivor).ImmunityList.Contains(a))                            
                         {
                             (a as MoveHitbox).Collision(b as Survivor);
                             (b as Survivor).ImmunityList.Add(a as MoveHitbox);

@@ -83,6 +83,16 @@ namespace ITEC225FinalProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap EarthPower {
+            get {
+                object obj = ResourceManager.GetObject("EarthPower", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Flamethrower {
             get {
                 object obj = ResourceManager.GetObject("Flamethrower", resourceCulture);
@@ -163,6 +173,86 @@ namespace ITEC225FinalProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap HakamoWalk1 {
+            get {
+                object obj = ResourceManager.GetObject("HakamoWalk1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HakamoWalk2 {
+            get {
+                object obj = ResourceManager.GetObject("HakamoWalk2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HakamoWalk3 {
+            get {
+                object obj = ResourceManager.GetObject("HakamoWalk3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HakamoWalk4 {
+            get {
+                object obj = ResourceManager.GetObject("HakamoWalk4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap KommoWalk1 {
+            get {
+                object obj = ResourceManager.GetObject("KommoWalk1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap KommoWalk2 {
+            get {
+                object obj = ResourceManager.GetObject("KommoWalk2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap KommoWalk3 {
+            get {
+                object obj = ResourceManager.GetObject("KommoWalk3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap KommoWalk4 {
+            get {
+                object obj = ResourceManager.GetObject("KommoWalk4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TestCollision1 {
             get {
                 object obj = ResourceManager.GetObject("TestCollision1", resourceCulture);
@@ -193,6 +283,26 @@ namespace ITEC225FinalProject.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap TestCollision4 {
+            get {
+                object obj = ResourceManager.GetObject("TestCollision4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TestCollision5 {
+            get {
+                object obj = ResourceManager.GetObject("TestCollision5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TestSprite {
             get {
                 object obj = ResourceManager.GetObject("TestSprite", resourceCulture);
@@ -206,6 +316,16 @@ namespace ITEC225FinalProject.Properties {
         internal static System.Drawing.Bitmap TestSprite2 {
             get {
                 object obj = ResourceManager.GetObject("TestSprite2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TestVisual5 {
+            get {
+                object obj = ResourceManager.GetObject("TestVisual5", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

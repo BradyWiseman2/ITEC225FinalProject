@@ -9,7 +9,7 @@ namespace ITEC225FinalProject
     internal class SurvivorFlygon : Survivor
     {
 
-        public SurvivorFlygon() : base(100, 0, 2, 1, 10)
+        public SurvivorFlygon() : base(100, 0, 5, 1, 10)
         {
             
             SpritesArray = new Bitmap[]
@@ -24,11 +24,13 @@ namespace ITEC225FinalProject
                 Properties.Resources.FlygonIdle6,
                 Properties.Resources.FlygonIdle7,
             };
+            MaxDoubleJumps = 1;
+            teamID = 0;
         }
 
         public override void PrimaryFire()
         {
-            if (AttackCooldowns[((int)AttacksCs.PrimaryCooldown)] == 0 && AttackCooldowns[((int)AttacksCs.PrimaryRecovery)] == 0)
+            if (AttackCooldowns[((int)AttacksCs.PrimaryCooldown)] == 0 && TestRecovery())
             {
                 Flamethrower a;
                 if (FacingLeft)
@@ -46,13 +48,13 @@ namespace ITEC225FinalProject
                 AttackCooldowns[((int)AttacksCs.PrimaryCooldown)] = 0;
                 AttackCooldowns[((int)AttacksCs.PrimaryRecovery)] = (int)((double)20 * GetAttackSpeedReduction());
                 DirectionLocked = true;
-                PrimaryFireWent.Invoke(this, new AttackEventArg(a));
+                PrimaryFireWent.Invoke(this, new AttackEventArg(new List<MoveHitbox> {a}));
             }
         }
 
         public override void SecondaryFire()
         {
-            if (AttackCooldowns[((int)AttacksCs.SecondaryCooldown)] == 0) {
+            if (AttackCooldowns[((int)AttacksCs.SecondaryCooldown)] == 0 && TestRecovery()) {
                 DragonTail a;
                 if (FacingLeft)
                 {
@@ -69,14 +71,99 @@ namespace ITEC225FinalProject
                 AttackCooldowns[((int)AttacksCs.SecondaryCooldown)] = 100;
                 AttackCooldowns[((int)AttacksCs.SecondaryRecovery)] = 20;
                 DirectionLocked = true;
-                SecondaryFireWent.Invoke(this, new AttackEventArg(a));
+                SecondaryFireWent.Invoke(this, new AttackEventArg(new List<MoveHitbox> { a }));
             }
         }
+        public override void Utility()
+        {
+            if (AttackCooldowns[((int)AttacksCs.UtilityCooldown)] == 0 && TestRecovery())
+            {
+                switch (UtilityHelper())
+                {
+                    case 0:                       
+                        break;
+                    case 1:
+                        VelocityY = -(int)(MaxMoveSpeed * 3.5);
+                        AttackCooldowns[((int)AttacksCs.UtilityCooldown)] = 100;
+                        break;
+                    case 2:
+                        VelocityY = -(int)(MaxMoveSpeed * 3);
+                        VelocityX = MaxMoveSpeed;
+                        AttackCooldowns[((int)AttacksCs.UtilityCooldown)] = 100;
+                        break;
+                    case 3:
+                        VelocityX = MaxMoveSpeed * 3;
+                        AttackCooldowns[((int)AttacksCs.UtilityCooldown)] = 100;
+                        break;
+                    case 7:
+                        VelocityX = -MaxMoveSpeed * 3;
+                        AttackCooldowns[((int)AttacksCs.UtilityCooldown)] = 100;
+                        break;
+                    case 8:
+                        VelocityY = -(int)(MaxMoveSpeed * 3);
+                        VelocityX = -MaxMoveSpeed * 3;
+                        AttackCooldowns[((int)AttacksCs.UtilityCooldown)] = 100;
+                        break;
+                }
+
+            }
+                
+        }
+        public override void Special()
+        {
+            if (AttackCooldowns[((int)AttacksCs.SpecialCooldown)] == 0 && Grounded && TestRecovery())
+            {
+                MovementLocked = true;
+
+                EarthPower a = new EarthPower(this, FacingLeft, Location.X, Location.Y + (int)((double)ActiveSprite.Height * 0.8),
+                    new Bitmap[] { Properties.Resources.EarthPower });
+                a.Location.X -= a.ActiveSprite.Width;
+                EarthPower b = new EarthPower(this, FacingLeft, Location.X + ActiveSprite.Width, Location.Y + (int)((double)ActiveSprite.Height * 0.8),
+                   new Bitmap[] { Properties.Resources.EarthPower });
+
+                AttackCooldowns[((int)AttacksCs.SpecialCooldown)] = 100;
+                AttackCooldowns[((int)AttacksCs.SpecialRecovery)] = 20;
+                DirectionLocked = true;
+                SpecialWent.Invoke(this, new AttackEventArg(new List<MoveHitbox> { a, b }));
+            }
+        }
+        private int UtilityHelper()
+        {
+            int a = 0;
+            if (MoveUp)
+            {
+                if (MoveRight)
+                {
+                    a = 2;
+                }
+                else if (MoveLeft)
+                {
+                    a = 8;
+                }
+                else
+                {
+                    a = 1;
+                }
+            }
+            else if (MoveRight && !Grounded)
+            {
+                a = 3;
+            }
+            else if (MoveLeft && !Grounded)
+            {
+                a = 7;
+            }
+            return a;
+        }
+
         public delegate void SecondaryFireEvent(object sender, AttackEventArg e);
         public event SecondaryFireEvent SecondaryFireWent;
 
         public delegate void PrimaryFireEvent(object sender, AttackEventArg e);
         public event PrimaryFireEvent PrimaryFireWent;
-        
+
+        public delegate void SpecialEvent(object sender, AttackEventArg e);
+        public event SpecialEvent SpecialWent;
+
     }
 }

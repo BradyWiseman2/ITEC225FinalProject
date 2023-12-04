@@ -19,16 +19,24 @@ namespace ITEC225FinalProject
     }
     public class AttackEventArg
     {
-        public MoveHitbox MoveHitbox { get; set; }
+        public List<MoveHitbox> MoveHitbox { get; set; }
 
-        public AttackEventArg(MoveHitbox moveHitbox)
+        public AttackEventArg(List<MoveHitbox> moveHitbox)
         {
             MoveHitbox = moveHitbox;
         }
     }
-    public class Survivor : Entity
+    public class Survivor : Entity //I called this Survivor earlier in development, but I realize now that Monsters will inherit
+                                   //from this as well
     {
 
+        protected List<Item> Items { get; set; }
+        protected int teamID {get; set;}
+
+        public int TeamID { get { return teamID; } }
+        public bool IsMovementLocked { get { return MovementLocked; } }
+        protected bool MovementLocked { get; set; }
+        public bool JumpedThisUpPress = false;
         protected int animdelay;
         protected int animframe = 1;
         protected bool DirectionLocked;
@@ -39,13 +47,26 @@ namespace ITEC225FinalProject
         int Armor { get; set; }
         public int MoveSpeed { get; set; }
         int DoubleJumps { get; set; }
-        int Damage { get; set; } //Subject to change when the damage formula is complete
+        protected int MaxDoubleJumps { get; set; }
+        protected int Damage { get; set; }
         public bool MoveLeft { get; set; }
         public bool MoveRight { get; set; }
+        public bool MoveUp { get; set; }
         public int MaxMoveSpeed { get; set; }
         public bool FacingLeft { get; set; }
         public bool MoveDown { get; set; }
-        public int calcDamage { get { return Damage; } }
+        public int calcDamage { get 
+            {
+                int calc = Damage;
+                foreach (Item item in Items)
+                {
+                    if (item.DamageBoost > 0)
+                    {
+                        calc = (int)(calc * item.DamageBoost);
+                    }
+                }
+                return calc;
+            } }
         public int calcAttackSpeed { get { return 115; } }
        
         public Survivor(int health, int armor, int moveSpeed, int doubleJumps, int damage) 
@@ -58,7 +79,7 @@ namespace ITEC225FinalProject
             MoveSpeed = moveSpeed;
             DoubleJumps = doubleJumps;
             Damage = damage;
-            MaxMoveSpeed = 10;
+            MaxMoveSpeed = moveSpeed;
             ImmunityList = new List<MoveHitbox>();
            
         }
@@ -70,9 +91,20 @@ namespace ITEC225FinalProject
         
         public void Jump()
         {
-            VelocityY = -15;
-            Location.Y += VelocityY;
-            Grounded = false;
+            if (Grounded && JumpedThisUpPress == false)
+            {
+                VelocityY = -10;
+                Location.Y += VelocityY;
+                Grounded = false;
+                JumpedThisUpPress = true;
+            }
+            else if (DoubleJumps > 0 && JumpedThisUpPress == false)
+            {
+                VelocityY = -10;
+                Location.Y += VelocityY;
+                JumpedThisUpPress = true;
+                DoubleJumps--;
+            } 
         }
 
         public virtual void PrimaryFire()
@@ -104,12 +136,10 @@ namespace ITEC225FinalProject
                     AttackCooldowns[j]--;
                 }
             }
-            if (AttackCooldowns[(int)AttacksCs.PrimaryRecovery] == 0
-                && AttackCooldowns[(int)AttacksCs.SecondaryRecovery] == 0
-                && AttackCooldowns[(int)AttacksCs.UtilityRecovery] == 0
-                && AttackCooldowns[(int)AttacksCs.SpecialRecovery] == 0)
+            if (TestRecovery())
             {
                 DirectionLocked = false;
+                MovementLocked = false;
             }
                         
         }
@@ -122,6 +152,21 @@ namespace ITEC225FinalProject
                
             }
             
+        }
+
+        public bool TestRecovery()
+        {
+            if(AttackCooldowns[(int)AttacksCs.PrimaryRecovery] == 0
+                && AttackCooldowns[(int)AttacksCs.SecondaryRecovery] == 0
+                && AttackCooldowns[(int)AttacksCs.UtilityRecovery] == 0
+                && AttackCooldowns[(int)AttacksCs.SpecialRecovery] == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void TakeDamage(int amount)
@@ -163,7 +208,7 @@ namespace ITEC225FinalProject
         public Rectangle CameraPos(Bitmap map)
         {
             Rectangle a = new Rectangle(new Point(Location.X - 200 + (ActiveSprite.Width/2),
-                Location.Y - 200 + (ActiveSprite.Height/2)),new Size(400,400));
+                Location.Y - 200 + (ActiveSprite.Height/2)),new Size(400,300));
             if (a.X < 0)
             {
                 a.X = 0;
@@ -182,7 +227,26 @@ namespace ITEC225FinalProject
             }
             return a;
         }
-
+        public void RefreshDoubleJumps()
+        {
+            DoubleJumps = MaxDoubleJumps;
+        }
+        public void AddItem(Item item)
+        {
+            bool addeditem = false;
+            foreach(Item current in Items)
+            {
+                if (item.Name == current.Name)
+                {
+                    current.IncrementAmount();
+                    addeditem = true;
+                }
+            }
+            if (!addeditem)
+            {
+                Items.Add(item);
+            }
+        }
        
         
     }
